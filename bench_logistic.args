@@ -1,0 +1,264 @@
+--solver liblinear --penalty l2 -ns 10000 --dual True --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 100000 --dual True --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 1000000 --dual True --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 10000 --dual True --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 -ns 100000 --dual True --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 -ns 10000 --dual True --fit_intercept True --multi_class ovr -nf 10000
+--solver liblinear --penalty l2 -ns 10000 --dual True --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 100000 --dual True --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 1000000 --dual True --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 10000 --dual True --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 -ns 100000 --dual True --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 -ns 10000 --dual True --fit_intercept False --multi_class ovr -nf 10000
+--solver liblinear --penalty l1 -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l1 -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l1 -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l1 -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l1 -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l1 -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver newton-cg --penalty l2 -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver lbfgs --penalty l2 -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver liblinear --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver sag --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver sag --penalty l2 -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver sag --penalty l2 -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver sag --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver sag --penalty l2 -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver sag --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver saga --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver saga --penalty l2 -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver saga --penalty l2 -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver saga --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver saga --penalty l2 -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver saga --penalty l2 -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 -ns 100000 --fit_intercept True --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 -ns 1000000 --fit_intercept True --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver newton-cg --penalty l2 -ns 100000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 10000
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 -ns 100000 --fit_intercept True --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 -ns 1000000 --fit_intercept True --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver lbfgs --penalty l2 -ns 100000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 10000
+--solver sag --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 100
+--solver sag --penalty l2 -ns 100000 --fit_intercept True --multi_class multinomial -nf 100
+--solver sag --penalty l2 -ns 1000000 --fit_intercept True --multi_class multinomial -nf 100
+--solver sag --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver sag --penalty l2 -ns 100000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver sag --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 10000
+--solver saga --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 100
+--solver saga --penalty l2 -ns 100000 --fit_intercept True --multi_class multinomial -nf 100
+--solver saga --penalty l2 -ns 1000000 --fit_intercept True --multi_class multinomial -nf 100
+--solver saga --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver saga --penalty l2 -ns 100000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver saga --penalty l2 -ns 10000 --fit_intercept True --multi_class multinomial -nf 10000
+--solver liblinear --penalty l1 -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l1 -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l1 -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l1 -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l1 -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l1 -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver newton-cg --penalty l2 -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver lbfgs --penalty l2 -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver liblinear --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver sag --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver sag --penalty l2 -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver sag --penalty l2 -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver sag --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver sag --penalty l2 -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver sag --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver saga --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver saga --penalty l2 -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver saga --penalty l2 -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver saga --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver saga --penalty l2 -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver saga --penalty l2 -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 -ns 100000 --fit_intercept False --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 -ns 1000000 --fit_intercept False --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver newton-cg --penalty l2 -ns 100000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver newton-cg --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 10000
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 -ns 100000 --fit_intercept False --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 -ns 1000000 --fit_intercept False --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver lbfgs --penalty l2 -ns 100000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver lbfgs --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 10000
+--solver sag --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 100
+--solver sag --penalty l2 -ns 100000 --fit_intercept False --multi_class multinomial -nf 100
+--solver sag --penalty l2 -ns 1000000 --fit_intercept False --multi_class multinomial -nf 100
+--solver sag --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver sag --penalty l2 -ns 100000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver sag --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 10000
+--solver saga --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 100
+--solver saga --penalty l2 -ns 100000 --fit_intercept False --multi_class multinomial -nf 100
+--solver saga --penalty l2 -ns 1000000 --fit_intercept False --multi_class multinomial -nf 100
+--solver saga --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver saga --penalty l2 -ns 100000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver saga --penalty l2 -ns 10000 --fit_intercept False --multi_class multinomial -nf 10000
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --dual True --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 100000 --dual True --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 1000000 --dual True --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --dual True --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 --class_weight balanced -ns 100000 --dual True --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --dual True --fit_intercept True --multi_class ovr -nf 10000
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --dual True --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 100000 --dual True --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 1000000 --dual True --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --dual True --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 --class_weight balanced -ns 100000 --dual True --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --dual True --fit_intercept False --multi_class ovr -nf 10000
+--solver liblinear --penalty l1 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l1 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l1 --class_weight balanced -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l1 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l1 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l1 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver sag --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept True --multi_class ovr -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 1000
+--solver saga --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class ovr -nf 1000
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class ovr -nf 10000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept True --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 10000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept True --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 10000
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class multinomial -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept True --multi_class multinomial -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver sag --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 10000
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class multinomial -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept True --multi_class multinomial -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver saga --penalty l2 --class_weight balanced -ns 100000 --fit_intercept True --multi_class multinomial -nf 1000
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept True --multi_class multinomial -nf 10000
+--solver liblinear --penalty l1 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l1 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l1 --class_weight balanced -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l1 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l1 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l1 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver liblinear --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver sag --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept False --multi_class ovr -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 1000
+--solver saga --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class ovr -nf 1000
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class ovr -nf 10000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept False --multi_class multinomial -nf 100
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver newton-cg --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 10000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept False --multi_class multinomial -nf 100
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver lbfgs --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 10000
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class multinomial -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept False --multi_class multinomial -nf 100
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver sag --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver sag --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 10000
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class multinomial -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 1000000 --fit_intercept False --multi_class multinomial -nf 100
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver saga --penalty l2 --class_weight balanced -ns 100000 --fit_intercept False --multi_class multinomial -nf 1000
+--solver saga --penalty l2 --class_weight balanced -ns 10000 --fit_intercept False --multi_class multinomial -nf 10000

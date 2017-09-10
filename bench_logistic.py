@@ -41,7 +41,7 @@ if __name__ == '__main__':
     y = np.load(y_name)
     data_loading_time = time() - start_time
     print "- data loading time:", data_loading_time
-    print "- benchmark lasso regression with", args.ns, "samples,", args.nf, "features"
+    print "- benchmark logistic regression with", args.ns, "samples,", args.nf, "features"
     regr = linear_model.LogisticRegression(penalty=args.penalty, dual=args.dual,
         tol=args.tol, C=args.C, fit_intercept=args.fit_intercept, 
         intercept_scaling=args.intercept_scaling,
@@ -52,5 +52,5 @@ if __name__ == '__main__':
     regr.fit(X, y)
     fit_time = time() - start_time
     print "- benchmark finished, fitting time:", fit_time
-    with open("bench_lasso.time", 'w') as f:
+    with open("bench_logistic.time", 'w') as f:
         f.write(str(fit_time)+'\n')

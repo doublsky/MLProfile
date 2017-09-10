@@ -33,5 +33,3 @@ if __name__ == '__main__':
     regr.fit(X, y)
     fit_time = time() - start_time
     print "- benchmark finished, fitting time:", fit_time
-    with open("bench_linear.time", 'w') as f:
-        f.write(str(fit_time)+'\n')

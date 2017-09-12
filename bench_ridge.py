@@ -2,6 +2,7 @@
 Benchmark Ridge
 
 """
+from util import *
 import numpy as np
 import argparse
 from time import time
@@ -15,15 +16,15 @@ if __name__ == '__main__':
                         help="Number of features to be generated and fit.")
     parser.add_argument('--alpha', default=1.0, type=float,
                         help="parameter for underlying ridge regression.")
-    parser.add_argument('--fit_intercept', default=True, type=bool,
+    parser.add_argument('--fit_intercept', default=True, type=str2bool,
                         help="parameter for underlying ridge regression.")
-    parser.add_argument('--normalize', default=False, type=bool,
+    parser.add_argument('--normalize', default=False, type=str2bool,
                         help="parameter for underlying ridge regression.")
     parser.add_argument('--solver', default='auto', type=str,
                         help="parameter for underlying ridge regression.")
     args = parser.parse_args()
 
-    print "- generating data..."
+    print "- loading data..."
     start_time = time()
     X_name = "dataset/regX_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     X = np.load(X_name)
@@ -37,5 +38,3 @@ if __name__ == '__main__':
     regr.fit(X, y)
     fit_time = time() - tstart
     print "- benchmark finished, fitting time:", fit_time, "sec"
-    with open("bench_ridge.time", "w") as f:
-        f.write(str(fit_time)+'\n')

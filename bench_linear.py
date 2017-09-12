@@ -2,6 +2,7 @@
 Benchmark Linear Regression
 
 """
+from util import *
 import numpy as np
 import argparse
 from time import time
@@ -13,9 +14,9 @@ if __name__ == '__main__':
                         help="Number of samples to be generated and fit.")
     parser.add_argument('-nf', default=100, type=int,
                         help="Number of features to be generated and fit.")
-    parser.add_argument('--fit_intercept', default=True, type=bool,
+    parser.add_argument('--fit_intercept', default=True, type=str2bool,
                         help="parameter for underlying linear regression.")
-    parser.add_argument('--normalize', default=False, type=bool,
+    parser.add_argument('--normalize', default=False, type=str2bool,
                         help="parameter for underlying linear regression.")
     args = parser.parse_args()
 

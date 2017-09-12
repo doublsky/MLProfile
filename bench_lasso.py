@@ -2,6 +2,7 @@
 Benchmark Lasso
 
 """
+from util import *
 import numpy as np
 import argparse
 from time import time
@@ -15,19 +16,19 @@ if __name__ == '__main__':
                         help="Number of features to be generated and fit.")
     parser.add_argument('--alpha', default=1.0, type=float,
                         help="parameter for underlying lasso regression.")
-    parser.add_argument('--fit_intercept', default=True, type=bool,
+    parser.add_argument('--fit_intercept', default=True, type=str2bool,
                         help="parameter for underlying lasso regression.")
-    parser.add_argument('--normalize', default=False, type=bool,
+    parser.add_argument('--normalize', default=False, type=str2bool,
                         help="parameter for underlying lasso regression.")
-    parser.add_argument('--precompute', default=False, type=bool,
+    parser.add_argument('--precompute', default=False, type=str2bool,
                         help="parameter for underlying lasso regression.")
-    parser.add_argument('--positive', default=False, type=bool,
+    parser.add_argument('--positive', default=False, type=str2bool,
                         help="parameter for underlying lasso regression.")
     parser.add_argument('--selection', default='cyclic', type=str,
                         help="parameter for underlying lasso regression.")
     args = parser.parse_args()
 
-    print "- generating data..."
+    print "- loading data..."
     start_time = time()
     X_name = "dataset/regX_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     X = np.load(X_name)
@@ -36,10 +37,16 @@ if __name__ == '__main__':
     data_loading_time = time() - start_time
     print "- data loading time:", data_loading_time
     print "- benchmark lasso regression with", args.ns, "samples,", args.nf, "features"
-    regr = linear_model.Lasso(copy_X=False, alpha=args.alpha, normalize=args.normalize, fit_intercept=args.fit_intercept, precompute=args.precompute)
+    regr = linear_model.Lasso(
+        copy_X=False,
+        alpha=args.alpha,
+        normalize=args.normalize,
+        fit_intercept=args.fit_intercept,
+        precompute=args.precompute,
+        positive=args.positive,
+        selection=args.selection
+    )
     start_time = time()
     regr.fit(X, y)
     fit_time = time() - start_time
     print "- benchmark finished, fitting time:", fit_time
-    with open("bench_lasso.time", 'w') as f:
-        f.write(str(fit_time)+'\n')

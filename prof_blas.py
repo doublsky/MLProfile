@@ -62,7 +62,7 @@ def process_rpt(rpt, bench):
 def run_bench(bench):
     global args
     test_cmd = ['timeout', '-k', '3', '3', 'python', bench]
-    perf_cmd = ['operf', 'timeout', '-k', args.timeout, args.timeout, 'python', bench]
+    perf_cmd = ['operf', '--event=CPU_CLK_UNHALTED:300000', 'timeout', '-k', args.timeout, '-s', '9', args.timeout, 'python', bench]
 
     with open(bench.replace(".py", ".args"), 'r') as arg_list:
         for perf_arg in arg_list:

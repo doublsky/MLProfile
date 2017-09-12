@@ -2,5 +2,5 @@
 
 set -e
 
-operf $@
+operf -g $@
 opreport -l -t 1

@@ -17,8 +17,10 @@ if __name__ == "__main__":
 
     # force numpy to run in single thread
     os.environ["OMP_NUM_THREADS"] = "1"
+    pin_home = os.environ["PIN_ROOT"]
 
-    pin_cmd = "/home/ttan/Tools/pin-3.4-97438-gf90d1f746-gcc-linux/pin -t /home/ttan/Tools/pin-3.4-97438-gf90d1f746-gcc-linux/source/tools/MyPinTool/obj-intel64/procatrace.so -- python".split()
+    #pin_cmd = "$PIN_HOME/pin -t $PIN_HOME/source/tools/pintools/obj-intel64/procatrace.so -- python".split()
+    pin_cmd = [pin_home+"/pin", "-t", pin_home+"/source/tools/pintools/obj-intel64/procatrace.so", "--", "python"]
 
     if not os.path.exists(args.output):
         os.makedirs(args.output)

@@ -7,6 +7,7 @@ import numpy as np
 import argparse
 from time import time
 from sklearn import neighbors
+import sys
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Benchmark K Nearest Neighbor Classifier.")
@@ -28,15 +29,15 @@ if __name__ == '__main__':
                         help="parameter for underlying k nearest neighbors classifier.")
     args = parser.parse_args()
 
-    print "- loading data..."
+    print >> sys.stderr, "- loading data..."
     start_time = time()
     X_name = "dataset/clfX_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     X = np.load(X_name)
     y_name = "dataset/clfy_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     y = np.load(y_name)
     data_loading_time = time() - start_time
-    print "- data loading time:", data_loading_time
-    print "- benchmark K nearest neighbors classifier..." 
+    print >> sys.stderr, "- data loading time:", data_loading_time
+    print >> sys.stderr, "- benchmark K nearest neighbors classifier..." 
     clf = neighbors.KNeighborsClassifier(
         n_neighbors=args.n_neighbors,
         weights=args.weights,
@@ -48,4 +49,4 @@ if __name__ == '__main__':
     start_time = time()
     clf.fit(X, y)
     fit_time = time() - start_time
-    print "- benchmark finished, fitting time:", fit_time
+    print >> sys.stderr, "- benchmark finished, fitting time:", fit_time

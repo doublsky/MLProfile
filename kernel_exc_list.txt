@@ -1,2 +1,7 @@
 no-vmlinux
 python
+_wordcopy_fwd_aligned
+_unaligned_strided_byte_copy
+_aligned_cast_long_to_int
+__pyx_f_7sklearn_4tree_6_utils_14WeightedPQueue_push
+__pyx_f_7sklearn_4tree_6_utils_14WeightedPQueue_remove

@@ -7,6 +7,7 @@ import numpy as np
 import argparse
 from time import time
 from sklearn import linear_model
+import sys
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Benchmark lasso regression.")
@@ -20,7 +21,7 @@ if __name__ == '__main__':
                         help="parameter for underlying lasso regression.")
     parser.add_argument('--normalize', default=False, type=str2bool,
                         help="parameter for underlying lasso regression.")
-    parser.add_argument('--precompute', default=False, type=str2bool,
+    parser.add_argument('--precompute', default=True, type=str2bool,
                         help="parameter for underlying lasso regression.")
     parser.add_argument('--positive', default=False, type=str2bool,
                         help="parameter for underlying lasso regression.")
@@ -28,15 +29,15 @@ if __name__ == '__main__':
                         help="parameter for underlying lasso regression.")
     args = parser.parse_args()
 
-    print "- loading data..."
+    print >> sys.stderr, "- loading data..."
     start_time = time()
     X_name = "dataset/regX_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     X = np.load(X_name)
     y_name = "dataset/regy_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     y = np.load(y_name)
     data_loading_time = time() - start_time
-    print "- data loading time:", data_loading_time
-    print "- benchmark lasso regression with", args.ns, "samples,", args.nf, "features"
+    print >> sys.stderr, "- data loading time:", data_loading_time
+    print >> sys.stderr, "- benchmark lasso regression with", args.ns, "samples,", args.nf, "features"
     regr = linear_model.Lasso(
         copy_X=False,
         alpha=args.alpha,
@@ -49,4 +50,4 @@ if __name__ == '__main__':
     start_time = time()
     regr.fit(X, y)
     fit_time = time() - start_time
-    print "- benchmark finished, fitting time:", fit_time
+    print >> sys.stderr, "- benchmark finished, fitting time:", fit_time

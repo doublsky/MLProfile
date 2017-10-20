@@ -35,9 +35,9 @@ if __name__ == '__main__':
     data_gen_time = time() - start_time
     print "- data generation time:", data_gen_time
 
-    regX_name = "dataset/clfX_ns"+str(args.ns)+"_nf"+str(args.nf)
+    regX_name = "dataset/clfX_ns"+str(args.ns)+"_nf"+str(args.nf)+"_c"+str(args.n_classes)
     np.save(regX_name, X)
-    regy_name = "dataset/clfy_ns"+str(args.ns)+"_nf"+str(args.nf)
+    regy_name = "dataset/clfy_ns"+str(args.ns)+"_nf"+str(args.nf)+"_c"+str(args.n_classes)
     np.save(regy_name, y)
 
     newX = np.load(regX_name+".npy")

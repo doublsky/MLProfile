@@ -6,6 +6,7 @@ import numpy as np
 import argparse
 from time import time
 from sklearn import linear_model
+import sys
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Benchmark logistic regression.")
@@ -33,15 +34,15 @@ if __name__ == '__main__':
                         help="parameter for underlying logistic regression.")
     args = parser.parse_args()
 
-    print "- loading data..."
+    print >> sys.stderr, "- loading data..."
     start_time = time()
     X_name = "dataset/clfX_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     X = np.load(X_name)
     y_name = "dataset/clfy_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     y = np.load(y_name)
     data_loading_time = time() - start_time
-    print "- data loading time:", data_loading_time
-    print "- benchmark logistic regression with", args.ns, "samples,", args.nf, "features"
+    print >> sys.stderr, "- data loading time:", data_loading_time
+    print >> sys.stderr, "- benchmark logistic regression with", args.ns, "samples,", args.nf, "features"
     regr = linear_model.LogisticRegression(penalty=args.penalty, dual=args.dual,
         tol=args.tol, C=args.C, fit_intercept=args.fit_intercept, 
         intercept_scaling=args.intercept_scaling,
@@ -51,6 +52,6 @@ if __name__ == '__main__':
     start_time = time()
     regr.fit(X, y)
     fit_time = time() - start_time
-    print "- benchmark finished, fitting time:", fit_time
+    print >> sys.stderr, "- benchmark finished, fitting time:", fit_time
     with open("bench_logistic.time", 'w') as f:
         f.write(str(fit_time)+'\n')

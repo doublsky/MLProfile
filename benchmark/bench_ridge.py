@@ -7,6 +7,7 @@ import numpy as np
 import argparse
 from time import time
 from sklearn import linear_model
+import sys
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Benchmark ridge regression.")
@@ -24,17 +25,18 @@ if __name__ == '__main__':
                         help="parameter for underlying ridge regression.")
     args = parser.parse_args()
 
-    print "- loading data..."
+    print >> sys.stderr, "- loading data..."
     start_time = time()
     X_name = "dataset/regX_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     X = np.load(X_name)
     y_name = "dataset/regy_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     y = np.load(y_name)
     data_loading_time = time() - start_time
-    print "- data loading time:", data_loading_time
-    print "- benchmark ridge regression..." 
+    print >> sys.stderr, "- data loading time:", data_loading_time
+    print >> sys.stderr, "- benchmark ridge regression..." 
     regr = linear_model.Ridge(copy_X=False, alpha=args.alpha, normalize=args.normalize, fit_intercept=args.fit_intercept, solver=args.solver)
     tstart = time()
-    regr.fit(X, y)
+    for _ in range(1000):
+        regr.fit(X, y)
     fit_time = time() - tstart
-    print "- benchmark finished, fitting time:", fit_time, "sec"
+    print >> sys.stderr, "- benchmark finished, fitting time:", fit_time, "sec"

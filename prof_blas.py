@@ -80,7 +80,7 @@ with open(args.bench_list, 'r') as bench_list:
             # init
             results_df = pd.DataFrame()
             idx = 0
-            bench = bench.rstrip()
+            bench = "benchmark/"+bench.rstrip()
 
             try:
                 # run

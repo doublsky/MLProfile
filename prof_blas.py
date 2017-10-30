@@ -62,12 +62,11 @@ def run_bench(bench):
 
 
 def time_bench(cmdargs, bench):
-    cmd = ['/usr/bin/time', 'python'] + [bench]
-    with open(get_argfile(bench), 'r') as argfile, open(cmdargs.output, 'w') as outfile:
+    cmd = ['/usr/bin/time', '-a', '-o', cmdargs.output, 'python'] + [bench]
+    with open(get_argfile(bench), 'r') as argfile:
         for line in argfile:
             arg_list = line.split()
-            result = sp.check_output(cmd + arg_list)
-            outfile.write(result)
+            sp.check_call(cmd + arg_list)
 
 
 # top level parser

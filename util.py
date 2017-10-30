@@ -5,6 +5,10 @@ Utilities for sklearn BLAS profiling.
 import argparse
 import pandas as pd
 
+
+def get_argfile(bench):
+    return bench.replace('.py', '.args')
+
 def str2bool(s):
     if (s == 'True'):
         return True

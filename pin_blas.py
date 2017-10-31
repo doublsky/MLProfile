@@ -20,7 +20,7 @@ if __name__ == "__main__":
     # get pin root
     pin_home = os.environ["PIN_ROOT"]
 
-    pin_cmd = [pin_home+"/pin", "-t", pin_home+"/source/tools/pintools/obj-intel64/procatrace.so", "--", "python"]
+    pin_cmd = [pin_home+"/pin", "-t", "pintools/obj-intel64/procatrace.so"]
 
     if not os.path.exists(args.output):
         os.makedirs(args.output)
@@ -38,11 +38,11 @@ if __name__ == "__main__":
                 with open(config_file, 'r') as config_list:
                     for configs in config_list:
                         # init
-                        outfile = bench.replace(".py", "_"+str(count)+".trace")
+                        outfile = bench.replace(".py", "_config"+str(count)+".trace")
+                        outfile = os.path.join(args.output, outfile)
 
                         # call pin
-                        #pin = sp.Popen(pin_cmd + [benchfile] + configs.split(), stdout=sp.PIPE)
-                        sp.check_call(pin_cmd + [benchfile] + configs.split())
+                        sp.check_call(pin_cmd + ["-output", outfile, "--", "python", benchfile] + configs.split())
 
                         # parse results
                         #mem_read, mem_write, comm = parse_trace(pin.stdout)
@@ -56,5 +56,5 @@ if __name__ == "__main__":
                             results_df.set_value(index, "mem_write", mem_write[index])
 
                         # save results
-                        results_df.to_csv(os.path.join(args.output, outfile))
-                        count += 1'''
+                        results_df.to_csv(os.path.join(args.output, outfile))'''
+                        count += 1

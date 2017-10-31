@@ -177,10 +177,10 @@ int main(int argc, char * argv[])
     // Initialize symbol table code, needed for rtn instrumentation
     PIN_InitSymbols();
 
-    outFile.open(KnobOutputFile.Value().c_str());
 
     // Initialize pin
     if (PIN_Init(argc, argv)) return Usage();
+    outFile.open(KnobOutputFile.Value().c_str());
 
     // Register Routine to be called to instrument rtn
     RTN_AddInstrumentFunction(Routine, 0);

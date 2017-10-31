@@ -78,7 +78,7 @@ VOID RecordMemRead(THREADID tid, ADDRINT funcaddr, VOID * memaddr)
         PIN_Detach();
     }
 
-    if (KnobOutputFile == "stdout") {
+    if (KnobOutputFile.Value() == "stdout") {
         cout << funcname << " R " << hex << memaddr << endl;
     } else {
         outFile << funcname << " R " << hex << memaddr << endl;
@@ -96,7 +96,7 @@ VOID RecordMemWrite(THREADID tid, ADDRINT funcaddr, VOID * memaddr)
         PIN_Detach();
     }
 
-    if (KnobOutputFile == "stdout") {
+    if (KnobOutputFile.Value() == "stdout") {
         cout << funcname << " W " << hex << memaddr << endl;
     } else {
         outFile << funcname << " W " << hex << memaddr << endl;

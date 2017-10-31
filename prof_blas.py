@@ -42,17 +42,17 @@ def process_rpt(rpt):
     idx += 1
 
 
-def run_bench(bench):
-    global args
-    test_cmd = ['timeout', '-k', '3', '3', 'python', bench]
-    perf_cmd = ['operf', '--event=CPU_CLK_UNHALTED:300000', 'timeout', '-k', args.timeout, '-s', '9', args.timeout,
-                'python', bench]
+def perf_bench(cmdargs, benchfile):
+    test_cmd = ['timeout', '-k', '3', '3', 'python', benchfile]
+    #perf_cmd = ['operf', '--event=CPU_CLK_UNHALTED:300000', 'timeout', '-k', cmdargs.timeout, '-s', '9', args.timeout,
+    #            'python', benchfile]
+    perf_cmd = ['operf', 'python', benchfile]
 
-    with open(bench.replace(".py", ".args"), 'r') as arg_list:
+    with open(get_argfile(benchfile), 'r') as arg_list:
         for perf_arg in arg_list:
-            if (args.test):
+            if (cmdargs.test):
                 ret = sp.call(test_cmd + perf_arg.split())
-                if (ret != 0 and ret != 124):
+                if ret != 0 and ret != 124:
                     raise Exception("Cmd failed with " + str(ret) + ", args: " + perf_arg)
             else:
                 sp.check_call(perf_cmd + perf_arg.split())
@@ -61,9 +61,9 @@ def run_bench(bench):
                 process_rpt("/tmp/blasrpt_trimmed.tmp")
 
 
-def time_bench(cmdargs, bench):
-    cmd = ['/usr/bin/time', '-a', '-o', cmdargs.output, 'python'] + [bench]
-    with open(get_argfile(bench), 'r') as argfile:
+def time_bench(cmdargs, benchfile):
+    cmd = ['/usr/bin/time', '-a', '-o', cmdargs.output, 'python'] + [benchfile]
+    with open(get_argfile(benchfile), 'r') as argfile:
         for line in argfile:
             arg_list = line.split()
             sp.check_call(cmd + arg_list)
@@ -94,7 +94,9 @@ parser.add_argument('--tool', default='time', choices=['time', 'perf', 'pin'],
                     help='select which tool to use to profile')
 args = parser.parse_args()
 
-#kernel_exc_list = pd.read_table(args.kernel_exc_list, header=None, names=["kernel"])
+with open(args.klist, 'r') as klist_file:
+    kernel_list = klist_file.readlines()
+    kernel_list = map(lambda x: x.rstrip(), kernel_list)
 
 # iterate through all benchmarks
 with open(args.blist, 'r') as bench_list:

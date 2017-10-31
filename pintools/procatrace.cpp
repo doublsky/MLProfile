@@ -39,13 +39,14 @@ END_LEGAL */
 #include <string>
 #include "pin.H"
 
-//ofstream outFile;
+ofstream outFile;
 vector<string> klist;
 
 /* ===================================================================== */
 // Command line switches
 /* ===================================================================== */
 KNOB<string> KnobKernelListFile(KNOB_MODE_WRITEONCE, "pintool", "klist", "kernel_list.txt", "path to kernel list file");
+KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool", "output", "stdout", "path to output file");
 
 /* ===================================================================== */
 // Helper function
@@ -77,8 +78,11 @@ VOID RecordMemRead(THREADID tid, ADDRINT funcaddr, VOID * memaddr)
         PIN_Detach();
     }
 
-    //outFile << funcname << " R " << hex << memaddr << endl;
-    cout << funcname << " R " << hex << memaddr << endl;
+    if (KnobOutputFile == "stdout") {
+        cout << funcname << " R " << hex << memaddr << endl;
+    } else {
+        outFile << funcname << " R " << hex << memaddr << endl;
+    }
 }
 
 // Print a memory write record
@@ -92,8 +96,11 @@ VOID RecordMemWrite(THREADID tid, ADDRINT funcaddr, VOID * memaddr)
         PIN_Detach();
     }
 
-    //outFile << funcname << " W " << hex << memaddr << endl;
-    cout << funcname << " W " << hex << memaddr << endl;
+    if (KnobOutputFile == "stdout") {
+        cout << funcname << " W " << hex << memaddr << endl;
+    } else {
+        outFile << funcname << " W " << hex << memaddr << endl;
+    }
 }
 
 // Pin calls this function every time a new rtn is executed
@@ -144,7 +151,7 @@ VOID Routine(RTN rtn, VOID *v)
 // It prints the name and count for each procedure
 VOID Fini(INT32 code, VOID *v)
 {
-    //outFile.close();
+    outFile.close();
 }
 
 /* ===================================================================== */
@@ -170,7 +177,7 @@ int main(int argc, char * argv[])
     // Initialize symbol table code, needed for rtn instrumentation
     PIN_InitSymbols();
 
-    //outFile.open("/tmp/procatrace.out");
+    outFile.open(KnobOutputFile.Value().c_str());
 
     // Initialize pin
     if (PIN_Init(argc, argv)) return Usage();

@@ -9,17 +9,17 @@ from util import *
 import pandas as pd
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run Pin, collect data.")
+    parser = argparse.ArgumentParser(description="Run Pin, generate memory reference trace.")
     parser.add_argument("--blist", default="bench_list.txt", help="path to benchmark list file")
-    parser.add_argument("--trace", default="/tmp/procatrace.out", help="path to trace file")
     parser.add_argument("--output", default="pin_out", help="path to output directory")
     args = parser.parse_args()
 
     # force numpy to run in single thread
     os.environ["OMP_NUM_THREADS"] = "1"
+
+    # get pin root
     pin_home = os.environ["PIN_ROOT"]
 
-    #pin_cmd = "$PIN_HOME/pin -t $PIN_HOME/source/tools/pintools/obj-intel64/procatrace.so -- python".split()
     pin_cmd = [pin_home+"/pin", "-t", pin_home+"/source/tools/pintools/obj-intel64/procatrace.so", "--", "python"]
 
     if not os.path.exists(args.output):
@@ -32,19 +32,20 @@ if __name__ == "__main__":
                 # init
                 bench = bench.rstrip()
                 benchfile = "benchmark/" + bench
-                config_file = benchfile.replace(".py", ".args")
+                config_file = get_config_file(benchfile)
                 count = 0
 
                 with open(config_file, 'r') as config_list:
                     for configs in config_list:
                         # init
-                        outfile = bench.replace(".py", "_"+str(count)+".comm")
+                        outfile = bench.replace(".py", "_"+str(count)+".trace")
 
                         # call pin
-                        pin = sp.Popen(pin_cmd + [benchfile] + configs.split(), stdout=sp.PIPE)
+                        #pin = sp.Popen(pin_cmd + [benchfile] + configs.split(), stdout=sp.PIPE)
+                        sp.check_call(pin_cmd + [benchfile] + configs.split())
 
                         # parse results
-                        mem_read, mem_write, comm = parse_trace(pin.stdout)
+                        #mem_read, mem_write, comm = parse_trace(pin.stdout)
 
                         # format results
                         results_df = pd.DataFrame()

@@ -47,7 +47,7 @@ if __name__ == "__main__":
                         # parse results
                         #mem_read, mem_write, comm = parse_trace(pin.stdout)
 
-                        # format results
+                        ''''# format results
                         results_df = pd.DataFrame()
                         for key, value in comm.iteritems():
                             results_df.set_value(key[0], key[1], value)
@@ -57,4 +57,4 @@ if __name__ == "__main__":
 
                         # save results
                         results_df.to_csv(os.path.join(args.output, outfile))
-                        count += 1
+                        count += 1'''

@@ -4,7 +4,66 @@ Utilities for sklearn BLAS profiling.
 
 import argparse
 import pandas as pd
+import numpy as np
 import os
+
+
+def gen_dataset(RorC, ns, nf):
+    # imports
+    from sklearn.datasets.samples_generator import make_regression, make_classification
+
+    # get path to project root
+    MLProf_root = os.environ['MLPROF_ROOT']
+
+    if RorC == 'reg':
+        X, y = make_regression(n_samples=ns,
+                               n_features=nf,
+                               n_informative=nf//2,
+                               noise=0.1)
+    elif RorC == 'cl2':
+        X, y = make_classification(n_samples=ns,
+                                   n_features=nf,
+                                   n_informative=nf//2,
+                                   n_redundant=nf//10,
+                                   n_classes=2)
+    elif RorC == 'cl3':
+        X, y = make_classification(n_samples=ns,
+                                   n_features=nf,
+                                   n_informative=nf//2,
+                                   n_redundant=nf//10,
+                                   n_classes=3)
+    else:
+        raise ValueError("RorC must be either reg, cl2, or cl3, got " + str(RorC))
+    
+    X_name = '{}X_ns{}_nf{}'.format(RorC, ns, nf)
+    X_path = os.path.join(MLProf_root, 'dataset', X_name)
+    np.save(X_path, X)
+    y_name = '{}y_ns{}_nf{}'.format(RorC, ns, nf)
+    y_path = os.path.join(MLProf_root, 'dataset', y_name)
+    np.save(y_path, y)
+
+    newX = np.load(X_path+".npy")
+    newy = np.load(y_path+".npy")
+
+    assert np.array_equal(newX, X)
+    assert np.array_equal(newy, y)
+
+
+def maybe_create_dataset(config_line):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-ns', type=int)
+    parser.add_argument('-nf', type=int)
+    configs, _ = parser.parse_known_args(config_line.split())
+
+
+    MLProf_root = os.environ['MLPROF_ROOT']
+
+    for prefix in ['regX', 'regy', 'cl2X', 'cl2y', 'cl3X', 'cl3y']:
+        dataset_name = '{}_ns{}_nf{}.npy'.format(prefix, configs.ns, configs.nf)
+        dataset_path = os.path.join(MLProf_root,'dataset', dataset_name)
+
+        if not os.path.exists(dataset_path):
+            gen_dataset(prefix[0:3], configs.ns, configs.nf)
 
 
 def get_config_file(benchfile):

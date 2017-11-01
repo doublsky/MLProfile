@@ -41,6 +41,9 @@ if __name__ == "__main__":
                         outfile = bench.replace(".py", "_config"+str(count)+".trace")
                         outfile = os.path.join(args.output, outfile)
 
+                        # create dataset if not exist
+                        maybe_create_dataset(configs)
+
                         # call pin
                         sp.check_call(pin_cmd + ["-output", outfile, "--", "python", benchfile] + configs.split())
 

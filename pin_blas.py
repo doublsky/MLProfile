@@ -11,7 +11,7 @@ import pandas as pd
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run Pin, generate memory reference trace.")
     parser.add_argument("--blist", default="bench_list.txt", help="path to benchmark list file")
-    parser.add_argument("--output", default="pin_out", help="path to output directory")
+    parser.add_argument("--output", default="/scratchl/ttan/pin_out", help="path to output directory")
     args = parser.parse_args()
 
     # force numpy to run in single thread

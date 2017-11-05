@@ -8,6 +8,17 @@ import numpy as np
 import os
 
 
+def dict_to_str(input_dict):
+    return ' '.join('{} {}'.format(key, val) for key, val in input_dict.items())
+
+
+def write_config_file(filename, configs):
+    with open(filename, 'w') as f:
+        for config in configs:
+            if (config['-ns'] * config['-nf'] < 1e8+1):
+                f.write(dict_to_str(config)+"\n")
+
+
 def gen_dataset(RorC, ns, nf):
     # imports
     from sklearn.datasets.samples_generator import make_regression, make_classification
@@ -55,23 +66,27 @@ def maybe_create_dataset(config_line):
     parser.add_argument('-nf', type=int)
     configs, _ = parser.parse_known_args(config_line.split())
 
-
     MLProf_root = os.environ['MLPROF_ROOT']
+    dataset_dir = os.path.join(MLProf_root, 'dataset')
+
+    # maybe create dataset dir
+    if not os.path.exists(dataset_dir):
+        os.mkdir(dataset_dir)
 
     for prefix in ['regX', 'regy', 'cl2X', 'cl2y', 'cl3X', 'cl3y']:
         dataset_name = '{}_ns{}_nf{}.npy'.format(prefix, configs.ns, configs.nf)
-        dataset_path = os.path.join(MLProf_root,'dataset', dataset_name)
+        dataset_path = os.path.join(dataset_dir, dataset_name)
 
         if not os.path.exists(dataset_path):
             gen_dataset(prefix[0:3], configs.ns, configs.nf)
 
 
-def get_config_file(benchfile):
+def get_config_file(benchfile, prof_type):
     old_style_config_file = benchfile.replace('.py', '.args')
     if os.path.exists(old_style_config_file):
         return old_style_config_file
     else:
-        return benchfile.replace('.py', '.config')
+        return benchfile.replace('.py', '.{}cfg'.format(prof_type))
 
 
 def get_argfile(benchfile):

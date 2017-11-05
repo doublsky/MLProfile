@@ -28,37 +28,37 @@ def process_rpt(rpt, results_df, idx):
 
     # read results into a datafram
     rpt_df = pd.read_table(rpt, delim_whitespace=True, header=None, index_col=False,
-                           names=["samples", "percent", "image_name", "app_name", "symbol_name"])
+                           names=["samples", "percent", "image_name", "symbol_name"])
 
     # select kernels / exclude kernels
     if args.kexclude:
         for kernel in kernel_list:
             rpt_df = rpt_df[~(rpt_df["symbol_name"].str.contains(kernel))]
-    else:
-        selector = 0
-        for kernel in kernel_list:
-            selector |= rpt_df["symbol_name"].str.contains(kernel)
-        rpt_df = rpt_df[selector]
 
     # copy rest kernels
     for _, row in rpt_df.iterrows():
-        results_df.set_value(idx, row['symbol_name'], row['percent'])
+        if args.kexclude:
+            results_df.set_value(idx, row['symbol_name'], row['percent'])
+        else:
+            if row['symbol_name'] in kernel_list:
+                results_df.set_value(idx, row['symbol_name'], row['percent'])
 
     # move to next record
-    idx += 1
+    return idx + 1
 
 
 def perf_bench():
     test_cmd = ['timeout', '-k', '3', '3', 'python', benchfile]
     #perf_cmd = ['operf', '--event=CPU_CLK_UNHALTED:300000', 'timeout', '-k', cmdargs.timeout, '-s', '9', args.timeout,
     #            'python', benchfile]
-    perf_cmd = ['operf', 'python', benchfile]
+    perf_cmd = ['operf', '--event=CPU_CLK_UNHALTED:300000', 'python', benchfile]
 
     results_df = pd.DataFrame()
     idx = 0
 
-    with open(get_config_file(benchfile), 'r') as config_list:
+    with open(get_config_file(benchfile, 'perf'), 'r') as config_list:
         for config in config_list:
+            maybe_create_dataset(config)
             if args.test:
                 ret = sp.call(test_cmd + config.split())
                 if ret != 0 and ret != 124:
@@ -68,7 +68,7 @@ def perf_bench():
                     sp.check_call(perf_cmd + config.split())
                     sp.check_call(rpt_cmd + ["-o", "/tmp/blasrpt.tmp"])
                     trim_func_param("/tmp/blasrpt.tmp", "/tmp/blasrpt_trimmed.tmp")
-                    process_rpt("/tmp/blasrpt_trimmed.tmp", results_df, idx)
+                    idx = process_rpt("/tmp/blasrpt_trimmed.tmp", results_df, idx)
                 finally:
                     # post processing (generate signature)
                     for index, row in results_df.iterrows():
@@ -77,14 +77,15 @@ def perf_bench():
 
                     # export to .csv
                     if (not args.test):
-                        results_df.to_csv(bench.replace('.py', '.csv'), index=False)
+                        results_df.to_csv(benchfile.replace('.py', '.csv'), index=False)
 
 
 def time_bench():
     time_output = benchfile.replace('.py', '.time')
     cmd = ['/usr/bin/time', '-a', '-o', time_output, 'python'] + [benchfile]
-    with open(get_config_file(benchfile), 'r') as config_file:
+    with open(get_config_file(benchfile, 'time'), 'r') as config_file:
         for config in config_file:
+            maybe_create_dataset(config)
             sp.check_call(cmd + config.split())
 
 
@@ -125,4 +126,4 @@ with open(args.blist, 'r') as bench_list:
             benchfile = "benchmark/" + bench.rstrip()
 
             # run
-            args.func(args, bench)
+            args.func()

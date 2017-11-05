@@ -34,13 +34,12 @@ END_LEGAL */
 
 #include <fstream>
 #include <iostream>
-#include <vector>
-#include <algorithm>
+#include <map>
 #include <string>
 #include "pin.H"
 
 ofstream outFile;
-vector<string> klist;
+map<string, UINT64> klist;     // pair<kernel_name, num_times_called>
 
 /* ===================================================================== */
 // Command line switches
@@ -53,22 +52,27 @@ KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool", "output", "stdout", 
 /* ===================================================================== */
 bool kcontains(const string kname)
 {
-    return find(klist.begin(), klist.end(), kname) != klist.end();
+    return (klist.find(kname) != klist.end());
 }
 
-void klist_init(vector<string> *klist)
+void klist_init(map<string, UINT64> *klist)
 {
     ifstream klfile(KnobKernelListFile.Value().c_str());
     string kernel;
 
     while(klfile >> kernel)
     {
-        klist->push_back(kernel);
+        pair<map<string, UINT64>::iterator, bool> ret;
+        ret = klist->insert(pair<string, UINT64>(kernel, 0));
+        if (ret.second == false)
+        {
+            PIN_ERROR("Duplicated kernel found in " + KnobKernelListFile.Value() + "\n");
+        }
     }
 }
 
 // Print a memory read record
-VOID RecordMemRead(THREADID tid, ADDRINT funcaddr, VOID * memaddr)
+VOID RecordMemRead(THREADID tid, ADDRINT funcaddr, VOID * memaddr, UINT32 size)
 {
     string funcname = RTN_FindNameByAddress(funcaddr);
 
@@ -79,14 +83,14 @@ VOID RecordMemRead(THREADID tid, ADDRINT funcaddr, VOID * memaddr)
     }
 
     if (KnobOutputFile.Value() == "stdout") {
-        cout << funcname << " R " << hex << memaddr << endl;
+        cout << funcname << " " << dec << klist[funcname] << " R " << hex << memaddr << " " << dec << size << endl;
     } else {
-        outFile << funcname << " R " << hex << memaddr << endl;
+        outFile << funcname << " " << dec << klist[funcname] << " R " << hex << memaddr << " " << dec << size << endl;
     }
 }
 
 // Print a memory write record
-VOID RecordMemWrite(THREADID tid, ADDRINT funcaddr, VOID * memaddr)
+VOID RecordMemWrite(THREADID tid, ADDRINT funcaddr, VOID * memaddr, UINT32 size)
 {
     string funcname = RTN_FindNameByAddress(funcaddr);
 
@@ -97,19 +101,29 @@ VOID RecordMemWrite(THREADID tid, ADDRINT funcaddr, VOID * memaddr)
     }
 
     if (KnobOutputFile.Value() == "stdout") {
-        cout << funcname << " W " << hex << memaddr << endl;
+        cout << funcname << " " << dec << klist[funcname] << " W " << hex << memaddr << " " << dec << size << endl;
     } else {
-        outFile << funcname << " W " << hex << memaddr << endl;
+        outFile << funcname << " " << dec << klist[funcname] << " W " << hex << memaddr << " " << dec << size << endl;
     }
+}
+
+// Count how many times a routine gets called
+VOID CountRoutine(UINT64* counter)
+{
+    (*counter)++;
 }
 
 // Pin calls this function every time a new rtn is executed
 VOID Routine(RTN rtn, VOID *v)
 {
-    if (kcontains(RTN_Name(rtn)))
+    string rtnName = RTN_Name(rtn);
+    if (kcontains(rtnName))
     {
-        cerr << "instrumenting " << RTN_Name(rtn) << endl;
+        cerr << "instrumenting " << rtnName << endl;
         RTN_Open(rtn);
+        
+        // Insert a call at the entry point of a routine to increment the call count
+        RTN_InsertCall(rtn, IPOINT_BEFORE, (AFUNPTR)CountRoutine, IARG_PTR, &(klist[rtnName]), IARG_END);
 
         // For each instruction of the routine
         for (INS ins = RTN_InsHead(rtn); INS_Valid(ins); ins = INS_Next(ins))
@@ -119,6 +133,7 @@ VOID Routine(RTN rtn, VOID *v)
             // Iterate over each memory operand of the instruction.
             for (UINT32 memOp = 0; memOp < memOperands; memOp++)
             {
+                UINT32 memOpSize = INS_MemoryOperandSize(ins, memOp);
                 if (INS_MemoryOperandIsRead(ins, memOp))
                 {
                     INS_InsertPredicatedCall(
@@ -126,6 +141,7 @@ VOID Routine(RTN rtn, VOID *v)
                         IARG_THREAD_ID,
                         IARG_ADDRINT, RTN_Address(rtn), 
                         IARG_MEMORYOP_EA, memOp,
+                        IARG_UINT32, memOpSize,
                         IARG_END);
                 }
                 // Note that in some architectures a single memory operand can be 
@@ -138,6 +154,7 @@ VOID Routine(RTN rtn, VOID *v)
                         IARG_THREAD_ID,
                         IARG_ADDRINT, RTN_Address(rtn), 
                         IARG_MEMORYOP_EA, memOp,
+                        IARG_UINT32, memOpSize,
                         IARG_END);
                 }
             }

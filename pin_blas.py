@@ -32,7 +32,7 @@ if __name__ == "__main__":
                 # init
                 bench = bench.rstrip()
                 benchfile = "benchmark/" + bench
-                config_file = get_config_file(benchfile)
+                config_file = get_config_file(benchfile, "pin")
                 count = 0
 
                 with open(config_file, 'r') as config_list:

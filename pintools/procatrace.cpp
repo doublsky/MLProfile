@@ -133,7 +133,20 @@ VOID Routine(RTN rtn, VOID *v)
             // Iterate over each memory operand of the instruction.
             for (UINT32 memOp = 0; memOp < memOperands; memOp++)
             {
+                // do not count prefetch instructions
+                if (INS_IsPrefetch(ins))
+                {
+                    continue;
+                }
+                
+                // do not count stack manipulation
+                if (INS_IsStackRead(ins) || INS_IsStackWrite(ins))
+                {
+                    continue;
+                }
+                
                 UINT32 memOpSize = INS_MemoryOperandSize(ins, memOp);
+                
                 if (INS_MemoryOperandIsRead(ins, memOp))
                 {
                     INS_InsertPredicatedCall(

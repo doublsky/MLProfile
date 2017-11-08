@@ -7,7 +7,7 @@ import pandas as pd
 import argparse
 from util import *
 
-rpt_cmd = "opreport -l -n -t 5".split()
+rpt_cmd = "opreport -l -n".split()
 
 
 # results dataframe

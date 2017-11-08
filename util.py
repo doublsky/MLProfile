@@ -189,23 +189,33 @@ def parse_trace(tracefile):
 
     with tracefile as trace:
         for line in trace:
-            kernel, rw, addr = line.split()
+            kernel, num_calls, rw, addr, size = line.split()
+            size = int(size)
+            addr_int = int(addr)
+            
+            # writer immediately becomes the owner
             if rw == 'W':
-                owner[addr] = (kernel, 'W')
+                # each 8-byte access goes to one entry
+                for i in range(0, size, 8):
+                    effective_addr = hex(addr_int+i)
+                    effective_size = min(8, size - i)
+                    owner[effective_addr] = (kernel, 'W', effective_size)
 
+            # first assume everything goes to memory
             if rw == 'R':
                 if kernel in mem_read:
-                    mem_read[kernel] += 1
+                    mem_read[kernel] += size
                 else:
-                    mem_read[kernel] = 1
+                    mem_read[kernel] = size
             elif rw == 'W':
                 if kernel in mem_write:
-                    mem_write[kernel] += 1
+                    mem_write[kernel] += size
                 else:
-                    mem_write[kernel] = 1
+                    mem_write[kernel] = size
             else:
                 raise Exception("Unknown memory operation in trace, line: " + line)
 
+            # now consider comm/locality
             if rw == 'R' and (addr in owner):
                 if owner[addr][1] == 'W':
                     mem_write[owner[addr][0]] -= 1

@@ -195,11 +195,10 @@ def parse_trace(tracefile):
             
             # writer immediately becomes the owner
             if rw == 'W':
-                # each 8-byte access goes to one entry
-                for i in range(0, size, 8):
+                # foreach byte
+                for i in range(0, size):
                     effective_addr = hex(addr_int+i)
-                    effective_size = min(8, size - i)
-                    owner[effective_addr] = (kernel, 'W', effective_size)
+                    owner[effective_addr] = (kernel, 'W')
 
             # first assume everything goes to memory
             if rw == 'R':
@@ -216,15 +215,19 @@ def parse_trace(tracefile):
                 raise Exception("Unknown memory operation in trace, line: " + line)
 
             # now consider comm/locality
-            if rw == 'R' and (addr in owner):
-                if owner[addr][1] == 'W':
-                    mem_write[owner[addr][0]] -= 1
-                mem_read[kernel] -= 1
-                if (owner[addr][0], kernel) in comm_matrix:
-                    comm_matrix[owner[addr][0], kernel] += 1
-                else:
-                    comm_matrix[owner[addr][0], kernel] = 1
-                owner[addr] = (kernel, 'R')
+            if rw == 'R':
+                # foreach byte
+                for i in range(0, size):
+                    effective_addr = hex(addr_int+i)
+                    if effective_addr in owner:
+                        if owner[effective_addr][1] == 'W':
+                            mem_write[owner[effective_addr][0]] -= 1
+                        mem_read[kernel] -= 1
+                        if (owner[effective_addr][0], kernel) in comm_matrix:
+                            comm_matrix[owner[effective_addr][0], kernel] += 1
+                        else:
+                            comm_matrix[owner[effective_addr][0], kernel] = 1
+                        owner[effective_addr] = (kernel, 'R')
 
     return mem_read, mem_write, comm_matrix
 

@@ -118,13 +118,13 @@ def trace2csv(csvfile, count, mem_rd, mem_wr, comm_mat):
         resutls.write("use case,producer,consumer,data\n")
         
         for key, value in mem_rd.iteritems():
-            resutls.write("{},memory,{},{}".format(count, key, value))
+            resutls.write("{},memory,{},{}\n".format(count, key, value))
 
         for key, value in mem_wr.iteritems():
-            resutls.write("{},{},memory,{}".format(count, key, value))
+            resutls.write("{},{},memory,{}\n".format(count, key, value))
 
         for key, value in comm_mat.iteritems():
-            resutls.write("{},{},{},{}".format(count, key[0], key[1], value))
+            resutls.write("{},{},{},{}\n".format(count, key[0], key[1], value))
 
 
 
@@ -173,10 +173,12 @@ def pin_bench(args):
                         mem_rd, mem_wr, comm_mat = parse_trace(trace)
                     
                     outfile = benchfile.replace(".py", "_pin.csv")
+                    if os.path.exists(outfile):
+                        os.remove(outfile)
+
                     trace2csv(outfile, count, mem_rd, mem_wr, comm_mat)
                     
                     count += 1
-
 
 
 if __name__ == "__main__":
@@ -199,7 +201,7 @@ if __name__ == "__main__":
     # parser for pin
     parser_pin = subparsers.add_parser("pin", help="run Pin, generate memory reference trace")
     parser_pin.add_argument("--klist", default="kernel_list.txt", help="path to kernel list file")
-    parser_pin.add_argument("--outdir", default="/scratchl/ttan/pin_out", help="path to output directory")
+    parser_pin.add_argument("--outdir", default="pin_out", help="path to output directory")
     parser_pin.set_defaults(func=pin_bench)
     
     # parser for test

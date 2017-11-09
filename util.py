@@ -191,7 +191,7 @@ def parse_trace(tracefile):
         for line in trace:
             kernel, num_calls, rw, addr, size = line.split()
             size = int(size)
-            addr_int = int(addr)
+            addr_int = int(addr, 16)
             
             # writer immediately becomes the owner
             if rw == 'W':

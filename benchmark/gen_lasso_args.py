@@ -3,22 +3,35 @@ Generate argument list for benchmark lasso regression.
 """
 
 from sklearn.model_selection import ParameterGrid
+from util import write_config_file
+import argparse
 
-def dict_to_str(input_dict):
-    return ' '.join('{} {}'.format(key, val) for key, val in input_dict.items())
+parser = argparse.ArgumentParser(description="Generate configuration file for bench_lasso")
+parser.add_argument("tool", help="configuration for which tool", choices=["time", "perf", "pin"])
+args = parser.parse_args()
 
-arg_dict = {
-    "--fit_intercept": [True, False],
-    "--normalize": [True, False],
-    "--precompute": [True, False],
-    "--positive": [True, False],
-    "--selection": ['cyclic', 'random'],
-    "-ns": [10000, 100000, 1000000],
-    "-nf": [100, 1000, 10000]
-}
+if args.tool == "pin":
+    arg_dict = {
+        "--fit_intercept": [True, False],
+        "--normalize": [True, False],
+        "--precompute": [True, False],
+        "--positive": [True, False],
+        "--selection": ["cyclic", "random"],
+        "-ns": [100, 400, 1600],
+        "-nf": [10, 40, 160]
+    }
+elif args.tool == "time" or args.tool == "perf":
+    arg_dict = {
+        "--fit_intercept": [True, False],
+        "--normalize": [True, False],
+        "--precompute": [True, False],
+        "--positive": [True, False],
+        "--selection": ["cyclic", "random"],
+        "-ns": [10000, 100000, 1000000],
+        "-nf": [100, 1000, 10000]
+    }
+
 arg_grid = ParameterGrid(arg_dict)
 
-with open('bench_lasso.args', 'w') as f:
-    for arg in arg_grid:
-        if (arg['-ns'] * arg['-nf'] <= 100000000):
-            f.write(dict_to_str(arg)+"\n")
+config_filename = "bench_lasso.{}cfg".format(args.tool)
+write_config_file(config_filename, arg_grid)

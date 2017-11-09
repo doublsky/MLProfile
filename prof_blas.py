@@ -115,8 +115,6 @@ def time_bench(args):
 
 def trace2csv(csvfile, count, mem_rd, mem_wr, comm_mat):
     with open(csvfile, "a") as resutls:
-        resutls.write("use case,producer,consumer,data\n")
-        
         for key, value in mem_rd.iteritems():
             resutls.write("{},memory,{},{}\n".format(count, key, value))
 
@@ -175,6 +173,8 @@ def pin_bench(args):
                     outfile = benchfile.replace(".py", "_pin.csv")
                     if os.path.exists(outfile):
                         os.remove(outfile)
+                    with open(outfile, "w") as resutls:
+                        resutls.write("use case,producer,consumer,data\n")
 
                     trace2csv(outfile, count, mem_rd, mem_wr, comm_mat)
                     

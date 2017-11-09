@@ -114,6 +114,7 @@ def time_bench(args):
 
 
 def trace2csv(csvfile, count, mem_rd, mem_wr, comm_mat):
+    print "processing No.", count
     with open(csvfile, "a") as resutls:
         for key, value in mem_rd.iteritems():
             resutls.write("{},memory,{},{}\n".format(count, key, value))
@@ -150,6 +151,12 @@ def pin_bench(args):
             config_file = get_config_file(benchfile, "pin")
             count = 0
             
+            outfile = benchfile.replace(".py", "_pin.csv")
+            if os.path.exists(outfile):
+                os.remove(outfile)
+            with open(outfile, "w") as resutls:
+                resutls.write("use case,producer,consumer,data\n")
+
             with open(config_file, 'r') as config_list:
                 for configs in config_list:
                     # init
@@ -170,12 +177,6 @@ def pin_bench(args):
                     with open(tracefile, "r") as trace:
                         mem_rd, mem_wr, comm_mat = parse_trace(trace)
                     
-                    outfile = benchfile.replace(".py", "_pin.csv")
-                    if os.path.exists(outfile):
-                        os.remove(outfile)
-                    with open(outfile, "w") as resutls:
-                        resutls.write("use case,producer,consumer,data\n")
-
                     trace2csv(outfile, count, mem_rd, mem_wr, comm_mat)
                     
                     count += 1

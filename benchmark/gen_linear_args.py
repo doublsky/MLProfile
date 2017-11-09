@@ -12,10 +12,10 @@ args = parser.parse_args()
 
 if args.tool == 'pin':
 	config_dict = {
-		'--fit_intercept': [True, False],
-		'--normalize': [False, True],
-	    '-ns': [100, 200, 400, 800],
-	    '-nf': [10, 20, 40, 80]
+        '--fit_intercept': [True, False],
+        '--normalize': [False, True],
+        '-ns': [100, 400, 1600],
+        '-nf': [10, 40, 160]
 	}
 elif args.tool == 'time' or args.tool == 'perf':
 	config_dict = {

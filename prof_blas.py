@@ -169,7 +169,7 @@ def pin_bench(args):
                         maybe_create_dataset(configs)
                         
                         # call pin
-                        full_cmd = pin_cmd
+                        full_cmd = list(pin_cmd)
                         full_cmd += ["-output", tracefile, "--", "python", benchfile]
                         full_cmd += configs.split()
                         sp.check_call(full_cmd)

@@ -9,14 +9,27 @@ import os
 import re
 
 
+def gen_bench_list(bench_dir):
+    all_files = os.listdir(bench_dir)
+    pattern = re.compile("bench_.*\.py")
+    bench_list = [x for x in all_files if re.match(pattern, x)]
+    return bench_list
+
+
+def gen_blist_file(args):
+    bench_list = gen_bench_list(args.bench_dir)
+    with open(args.output, "w") as f:
+        f.write("\n".join(bench_list)+"\n")
+
+
 def dict_to_str(input_dict):
-    return ' '.join('{} {}'.format(key, val) for key, val in input_dict.items())
+    return " ".join("{} {}".format(key, val) for key, val in input_dict.items())
 
 
 def write_config_file(filename, configs):
-    with open(filename, 'w') as f:
+    with open(filename, "w") as f:
         for config in configs:
-            if (config['-ns'] * config['-nf'] < 1e8+1):
+            if (config["-ns"] * config["-nf"] < 1e8+1):
                 f.write(dict_to_str(config)+"\n")
 
 
@@ -25,20 +38,20 @@ def gen_dataset(RorC, ns, nf):
     from sklearn.datasets.samples_generator import make_regression, make_classification
 
     # get path to project root
-    MLProf_root = os.environ['MLPROF_ROOT']
+    MLProf_root = os.environ["MLPROF_ROOT"]
 
-    if RorC == 'reg':
+    if RorC == "reg":
         X, y = make_regression(n_samples=ns,
                                n_features=nf,
                                n_informative=nf//2,
                                noise=0.1)
-    elif RorC == 'cl2':
+    elif RorC == "cl2":
         X, y = make_classification(n_samples=ns,
                                    n_features=nf,
                                    n_informative=nf//2,
                                    n_redundant=nf//10,
                                    n_classes=2)
-    elif RorC == 'cl3':
+    elif RorC == "cl3":
         X, y = make_classification(n_samples=ns,
                                    n_features=nf,
                                    n_informative=nf//2,
@@ -47,11 +60,11 @@ def gen_dataset(RorC, ns, nf):
     else:
         raise ValueError("RorC must be either reg, cl2, or cl3, got " + str(RorC))
     
-    X_name = '{}X_ns{}_nf{}'.format(RorC, ns, nf)
-    X_path = os.path.join(MLProf_root, 'dataset', X_name)
+    X_name = "{}X_ns{}_nf{}".format(RorC, ns, nf)
+    X_path = os.path.join(MLProf_root, "dataset", X_name)
     np.save(X_path, X)
-    y_name = '{}y_ns{}_nf{}'.format(RorC, ns, nf)
-    y_path = os.path.join(MLProf_root, 'dataset', y_name)
+    y_name = "{}y_ns{}_nf{}".format(RorC, ns, nf)
+    y_path = os.path.join(MLProf_root, "dataset", y_name)
     np.save(y_path, y)
 
     newX = np.load(X_path+".npy")
@@ -63,19 +76,19 @@ def gen_dataset(RorC, ns, nf):
 
 def maybe_create_dataset(config_line):
     parser = argparse.ArgumentParser()
-    parser.add_argument('-ns', type=int)
-    parser.add_argument('-nf', type=int)
+    parser.add_argument("-ns", type=int)
+    parser.add_argument("-nf", type=int)
     configs, _ = parser.parse_known_args(config_line.split())
 
-    MLProf_root = os.environ['MLPROF_ROOT']
-    dataset_dir = os.path.join(MLProf_root, 'dataset')
+    MLProf_root = os.environ["MLPROF_ROOT"]
+    dataset_dir = os.path.join(MLProf_root, "dataset")
 
     # maybe create dataset dir
     if not os.path.exists(dataset_dir):
         os.mkdir(dataset_dir)
 
-    for prefix in ['regX', 'regy', 'cl2X', 'cl2y', 'cl3X', 'cl3y']:
-        dataset_name = '{}_ns{}_nf{}.npy'.format(prefix, configs.ns, configs.nf)
+    for prefix in ["regX", "regy", "cl2X", "cl2y", "cl3X", "cl3y"]:
+        dataset_name = "{}_ns{}_nf{}.npy".format(prefix, configs.ns, configs.nf)
         dataset_path = os.path.join(dataset_dir, dataset_name)
 
         if not os.path.exists(dataset_path):
@@ -83,11 +96,11 @@ def maybe_create_dataset(config_line):
 
 
 def get_config_file(benchfile, prof_type):
-    old_style_config_file = benchfile.replace('.py', '.args')
+    old_style_config_file = benchfile.replace(".py", ".args")
     if os.path.exists(old_style_config_file):
         return old_style_config_file
     else:
-        return benchfile.replace('.py', '.{}cfg'.format(prof_type))
+        return benchfile.replace(".py", ".{}cfg".format(prof_type))
 
 
 def get_argfile(benchfile):
@@ -95,29 +108,29 @@ def get_argfile(benchfile):
 
 
 def str2bool(s):
-    if s == 'True':
+    if s == "True":
         return True
-    elif s == 'False':
+    elif s == "False":
         return False
     else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
+        raise argparse.ArgumentTypeError("Boolean value expected.")
 
 
 def get_series_signature(series):
-    ret = ''
+    ret = ""
     for _, value in series.iteritems():
         if pd.isnull(value):
-            ret += '0'
+            ret += "0"
         else:
-            ret += '1'
+            ret += "1"
     return int(ret, 2)
 
 
 def post_processing(df):
-    df.drop('workload', axis=1, inplace=True)
+    df.drop("workload", axis=1, inplace=True)
     for index, row in df.iterrows():
         sig = get_series_signature(row)
-        df.set_value(index, 'signature', sig)
+        df.set_value(index, "signature", sig)
 
 
 def post_proc(args):
@@ -127,25 +140,25 @@ def post_proc(args):
 
 
 def gen_klist(args):
-    data_df = pd.read_excel(args.input, sheetname='Dict')
-    data_df['Kernel Name'].to_csv(args.outtxt, header=False, index=False)
-    with open(args.outhead, 'w') as f:
-        f.write('#define KERNEL_SIZE ' + str(data_df.shape[0]) + '\n')
-        f.write('char* kernel_list[] = {\n')
+    data_df = pd.read_excel(args.input, sheetname="Dict")
+    data_df["Kernel Name"].to_csv(args.outtxt, header=False, index=False)
+    with open(args.outhead, "w") as f:
+        f.write("#define KERNEL_SIZE " + str(data_df.shape[0]) + "\n")
+        f.write("char* kernel_list[] = {\n")
         for _, row in data_df.iterrows():
-            f.write('    "' + row['Kernel Name'] + '",\n')
-        f.write('    "dummy"\n}; \n')
+            f.write("    "" + row["Kernel Name"] + "",\n")
+        f.write("    "dummy"\n}; \n")
 
 
 def arg2csv(args):
     result = pd.DataFrame()
     idx = 0
 
-    with open(args.argfile, 'r') as argf:
+    with open(args.argfile, "r") as argf:
         for line in argf:
             argslist = line.split()
             for key, value in zip(argslist[0::2], argslist[1::2]):
-                result.set_value(idx, re.sub('^-+', '', key), value)
+                result.set_value(idx, re.sub("^-+", "", key), value)
             idx += 1
 
     result.to_csv(args.csvfile, index=False)
@@ -154,7 +167,7 @@ def arg2csv(args):
 def find_dep(args):
     addr_dict = {}
     kernel_set = set()
-    with open(args.trace, 'r') as f:
+    with open(args.trace, "r") as f:
         for line in f:
             kernel, rw, addr = line.split()
             kernel_set.add(kernel)
@@ -170,11 +183,11 @@ def find_dep(args):
             dep_dict[k1, k2] = 0
 
     for addr in addr_dict:
-        writer = ''
+        writer = ""
         for kernel, rw in addr_dict[addr]:
-            if rw == 'W':
+            if rw == "W":
                 writer = kernel
-            if rw == 'R' and writer != '':
+            if rw == "R" and writer != "":
                 dep_dict[writer, kernel] += 1
 
     for k1 in kernel_set:
@@ -195,19 +208,19 @@ def parse_trace(tracefile):
             addr_int = int(addr, 16)
             
             # writer immediately becomes the owner
-            if rw == 'W':
+            if rw == "W":
                 # foreach byte
                 for i in range(0, size):
                     effective_addr = hex(addr_int+i)
-                    owner[effective_addr] = (kernel, 'W')
+                    owner[effective_addr] = (kernel, "W")
 
             # first assume everything goes to memory
-            if rw == 'R':
+            if rw == "R":
                 if kernel in mem_read:
                     mem_read[kernel] += size
                 else:
                     mem_read[kernel] = size
-            elif rw == 'W':
+            elif rw == "W":
                 if kernel in mem_write:
                     mem_write[kernel] += size
                 else:
@@ -216,51 +229,57 @@ def parse_trace(tracefile):
                 raise Exception("Unknown memory operation in trace, line: " + line)
 
             # now consider comm/locality
-            if rw == 'R':
+            if rw == "R":
                 # foreach byte
                 for i in range(0, size):
                     effective_addr = hex(addr_int+i)
                     if effective_addr in owner:
-                        if owner[effective_addr][1] == 'W':
+                        if owner[effective_addr][1] == "W":
                             mem_write[owner[effective_addr][0]] -= 1
                         mem_read[kernel] -= 1
                         if (owner[effective_addr][0], kernel) in comm_matrix:
                             comm_matrix[owner[effective_addr][0], kernel] += 1
                         else:
                             comm_matrix[owner[effective_addr][0], kernel] = 1
-                        owner[effective_addr] = (kernel, 'R')
+                        owner[effective_addr] = (kernel, "R")
 
     return mem_read, mem_write, comm_matrix
 
 
-if (__name__ == '__main__'):
-    parser = argparse.ArgumentParser(description='Utilities for BLAS profiling.')
-    subparsers = parser.add_subparsers(title='available sub-command')
+if (__name__ == "__main__"):
+    parser = argparse.ArgumentParser(description="Utilities for BLAS profiling.")
+    subparsers = parser.add_subparsers(title="available sub-command")
 
     # post_process
-    parser_pp = subparsers.add_parser('post_proc', help='generate signature for each use case')
-    parser_pp.add_argument('input', type=str, help='Path to input .csv file')
-    parser_pp.add_argument('-o', default='data.csv', type=str,
-                           help='Path to output .csv file')
+    parser_pp = subparsers.add_parser("post_proc", help="generate signature for each use case")
+    parser_pp.add_argument("input", type=str, help="Path to input .csv file")
+    parser_pp.add_argument("-o", default="data.csv", type=str,
+                           help="Path to output .csv file")
     parser_pp.set_defaults(func=post_proc)
 
     # generate kernel list
-    parser_klist = subparsers.add_parser('klist', help='extract all kernels from input Excel file')
-    parser_klist.add_argument('input', type=str, help='path to input excel file')
-    parser_klist.add_argument('--outtxt', default='kernel_list.txt', type=str, help='path to output file')
-    parser_klist.add_argument('--outhead', default='kernel_list.h', type=str, help='path to output file')
+    parser_klist = subparsers.add_parser("klist", help="extract all kernels from input Excel file")
+    parser_klist.add_argument("input", type=str, help="path to input excel file")
+    parser_klist.add_argument("--outtxt", default="kernel_list.txt", type=str, help="path to output file")
+    parser_klist.add_argument("--outhead", default="kernel_list.h", type=str, help="path to output file")
     parser_klist.set_defaults(func=gen_klist)
 
     # convert .args file to .csv file
-    parser_a2c = subparsers.add_parser('arg2csv', help='convert a bench_<app>.args file to .csv format')
-    parser_a2c.add_argument('argfile', type=str, help='Path to input .args file')
-    parser_a2c.add_argument('csvfile', type=str, help='Path to output .csv file')
+    parser_a2c = subparsers.add_parser("arg2csv", help="convert a bench_<app>.args file to .csv format")
+    parser_a2c.add_argument("argfile", type=str, help="Path to input .args file")
+    parser_a2c.add_argument("csvfile", type=str, help="Path to output .csv file")
     parser_a2c.set_defaults(func=arg2csv)
 
     # find dependency 
-    parser_dep = subparsers.add_parser('depend', help='find dependency among kernels')
-    parser_dep.add_argument('--trace', default='procatrace.out', help='path to trace file')
+    parser_dep = subparsers.add_parser("depend", help="find dependency among kernels")
+    parser_dep.add_argument("--trace", default="procatrace.out", help="path to trace file")
     parser_dep.set_defaults(func=find_dep)
+    
+    # generate bench_list file
+    parser_blist = subparsers.add_parser("blist", help="generate bench_list file")
+    parser_blist.add_argument("--bench_dir", default="benchmark", help="path to benchmark directory")
+    parser_blist.add_argument("--output", default="bench_list.txt", help="path to output bench_list file")
+    parser_blist.set_defaults(func=gen_blist_file)
 
     args = parser.parse_args()
     args.func(args)

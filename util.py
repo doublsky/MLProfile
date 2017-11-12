@@ -6,6 +6,7 @@ import argparse
 import pandas as pd
 import numpy as np
 import os
+import re
 
 
 def dict_to_str(input_dict):

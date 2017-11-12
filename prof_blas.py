@@ -72,7 +72,7 @@ def perf_bench(args):
             
             # init
             benchfile = "benchmark/" + bench.rstrip()
-            perf_cmd = ["operf", "--event=CPU_CLK_UNHALTED:300000", "python", benchfile]
+            perf_cmd = ["operf", "--event=CPU_CLK_UNHALTED:3000000", "python", benchfile]
             results_df = pd.DataFrame()
             idx = 0
 
@@ -171,7 +171,7 @@ def pin_bench(args):
                         maybe_create_dataset(configs)
                         
                         # call pin
-                        full_cmd = pin_cmd
+                        full_cmd = list(pin_cmd)
                         full_cmd += ["-output", tracefile, "--", "python", benchfile]
                         full_cmd += configs.split()
                         sp.check_call(full_cmd)

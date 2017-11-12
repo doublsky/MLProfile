@@ -86,12 +86,14 @@ def perf_bench(args):
                         idx = process_rpt("/tmp/blasrpt_trimmed.tmp", results_df, idx)
                     finally:
                         # post processing (generate signature)
-                        for index, row in results_df.iterrows():
-                            sig = get_series_signature(row)
-                            results_df.set_value(index, "signature", sig)
+                        #for index, row in results_df.iterrows():
+                        #    sig = get_series_signature(row)
+                        #    results_df.set_value(index, "signature", sig)
 
                         # export to .csv
-                        results_df.to_csv(benchfile.replace(".py", ".csv"), index=False)
+                        results_file = benchfile.replace("bench_", "perf_")
+                        results_file = results_file.replace(".py", ".csv")
+                        results_df.to_csv(results_file, index=False)
 
 
 def time_bench(args):

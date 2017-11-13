@@ -12,8 +12,8 @@ arg_dict = {
     "--loss": ['hinge', 'squared_hinge'],
     "--dual": [True, False],
     "--multi_class": ['ovr', 'crammer_singer'],
-    "-ns": [10000, 100000, 1000000],
-    "-nf": [100, 1000, 10000]
+    "-ns": [100, 200, 400, 800],
+    "-nf": [10, 20, 40, 80]
 }
 arg_grid = ParameterGrid(arg_dict)
 

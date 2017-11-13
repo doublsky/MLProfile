@@ -3,20 +3,34 @@ Generate argument list for benchmark SVC.
 """
 
 from sklearn.model_selection import ParameterGrid
+from util import write_config_file
+import argparse
 
-def dict_to_str(input_dict):
-    return ' '.join('{} {}'.format(key, val) for key, val in input_dict.items())
+parser = argparse.ArgumentParser(description="Generate configuration file for bench_svc")
+parser.add_argument('tool', help="configuration for which tool", choices=['time', 'perf', 'pin'])
+args = parser.parse_args()
 
-arg_dict = {
-    "--kernel": ['linear', 'poly', 'rbf', 'sigmoid'],
-    "--probability": [True, False],
-    "--shrinking": [True, False],
-    "-ns": [10000, 100000, 1000000],
-    "-nf": [100, 1000, 10000]
-}
+if args.tool == 'pin':
+    arg_dict = {
+        "--kernel": ['linear', 'poly', 'rbf', 'sigmoid'],
+        "--probability": [True, False],
+        "--shrinking": [True, False],
+        "--decision_function_shape": ["ovo", "ovr"],
+        "-ns": [100, 400, 1600],
+        "-nf": [10, 40, 160]
+    }
+elif args.tool == 'time' or args.tool == 'perf':
+    arg_dict = {
+        "--kernel": ['linear', 'poly', 'rbf', 'sigmoid'],
+        "--probability": [True, False],
+        "--shrinking": [True, False],
+        "--decision_function_shape": ["ovo", "ovr"],
+        "-ns": [10000, 100000, 1000000],
+        "-nf": [100, 1000, 10000]
+    }
+
 arg_grid = ParameterGrid(arg_dict)
 
-with open('bench_svc.args', 'w') as f:
-    for arg in arg_grid:
-        if (arg['-ns'] * arg['-nf'] <= 100000000):
-            f.write(dict_to_str(arg)+"\n")
+config_filename = 'bench_svc.{}cfg'.format(args.tool)
+
+write_config_file(config_filename, arg_grid)

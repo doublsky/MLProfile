@@ -74,7 +74,7 @@ void klist_init(map<string, UINT64> *klist)
 // Print a memory read record
 VOID RecordMemRead(THREADID tid, ADDRINT funcaddr, VOID * memaddr, UINT32 size)
 {
-    string funcname = RTN_FindNameByAddress(funcaddr);
+    string funcname = PIN_UndecorateSymbolName(RTN_FindNameByAddress(funcaddr), UNDECORATION_NAME_ONLY);
 
     // verify single thread
     if (tid != 0) {
@@ -92,7 +92,7 @@ VOID RecordMemRead(THREADID tid, ADDRINT funcaddr, VOID * memaddr, UINT32 size)
 // Print a memory write record
 VOID RecordMemWrite(THREADID tid, ADDRINT funcaddr, VOID * memaddr, UINT32 size)
 {
-    string funcname = RTN_FindNameByAddress(funcaddr);
+    string funcname = PIN_UndecorateSymbolName(RTN_FindNameByAddress(funcaddr), UNDECORATION_NAME_ONLY);
 
     // verify single thread
     if (tid != 0) {
@@ -116,8 +116,7 @@ VOID CountRoutine(UINT64* counter)
 // Pin calls this function every time a new rtn is executed
 VOID Routine(RTN rtn, VOID *v)
 {
-    string original_rtnName = RTN_Name(rtn);
-    string rtnName = PIN_UndecorateSymbolName(original_rtnName, UNDECORATION_NAME_ONLY);
+    string rtnName = PIN_UndecorateSymbolName(RTN_Name(rtn), UNDECORATION_NAME_ONLY);
     if (kcontains(rtnName))
     {
         cerr << "instrumenting " << rtnName << endl;

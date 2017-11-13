@@ -30,15 +30,15 @@ if __name__ == '__main__':
                         help="parameter for underlying svm.")
     parser.add_argument('--shrinking', default=True, type=str2bool,
                         help="parameter for underlying svm.")
-    parser.add_argument('--class_weight', default=None, type=str,
+    parser.add_argument('--decision_function_shape', default="ovr",
                         help="parameter for underlying svm.")
     args = parser.parse_args()
 
     print >> sys.stderr, "- loading data..."
     start_time = time()
-    X_name = "dataset/clfX_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
+    X_name = "dataset/cl3X_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     X = np.load(X_name)
-    y_name = "dataset/clfy_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
+    y_name = "dataset/cl3y_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     y = np.load(y_name)
     data_loading_time = time() - start_time
     print >> sys.stderr, "- data loading time:", data_loading_time
@@ -48,7 +48,7 @@ if __name__ == '__main__':
         degree=args.degree,
         probability=args.probability,
         shrinking=args.shrinking,
-        class_weight=args.class_weight,
+        decision_function_shape=args.decision_function_shape
     )
     start_time = time()
     clf.fit(X, y)

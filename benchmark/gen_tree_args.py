@@ -31,4 +31,4 @@ arg_grid = ParameterGrid(arg_dict)
 
 config_filename = 'bench_tree.{}cfg'.format(args.tool)
 
-write_config_file(config_filename, config_grid)
+write_config_file(config_filename, arg_grid)

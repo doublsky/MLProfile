@@ -116,7 +116,8 @@ VOID CountRoutine(UINT64* counter)
 // Pin calls this function every time a new rtn is executed
 VOID Routine(RTN rtn, VOID *v)
 {
-    string rtnName = RTN_Name(rtn);
+    string original_rtnName = RTN_Name(rtn);
+    string rtnName = PIN_UndecorateSymbolName(original_rtnName, UNDECORATION_NAME_ONLY);
     if (kcontains(rtnName))
     {
         cerr << "instrumenting " << rtnName << endl;

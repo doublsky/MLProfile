@@ -39,6 +39,9 @@ END_LEGAL */
 #include <string.h>
 #include "pin.H"
 
+#include <vector>
+#include <algorithm>
+
 ofstream outFile;
 
 // Holds instruction count for a single procedure
@@ -52,6 +55,12 @@ typedef struct RtnCount
     UINT64 _icount;
     struct RtnCount * _next;
 } RTN_COUNT;
+
+// compare function on RtnCount (sadly the default compiler flags does not support lambda functions)
+bool cmpRtnCount(RtnCount a, RtnCount b)
+{
+    return a._icount > b._icount;
+}
 
 // Linked list of instruction counts for each routine
 RTN_COUNT * RtnList = 0;
@@ -80,7 +89,7 @@ VOID Routine(RTN rtn, VOID *v)
 
     // The RTN goes away when the image is unloaded, so save it now
     // because we need it in the fini
-    rc->_name = RTN_Name(rtn);
+    rc->_name = PIN_UndecorateSymbolName(RTN_Name(rtn), UNDECORATION_NAME_ONLY);
     rc->_image = StripPath(IMG_Name(SEC_Img(RTN_Sec(rtn))).c_str());
     rc->_address = RTN_Address(rtn);
     rc->_icount = 0;
@@ -115,7 +124,27 @@ VOID Fini(INT32 code, VOID *v)
           << setw(18) << "Address" << " "
           << setw(12) << "Calls" << " "
           << setw(12) << "Instructions" << endl;
+    
+    // put rtn count into a vector to sort
+    vector<RTN_COUNT> rtn_vector;
+    for (RTN_COUNT * rc = RtnList; rc; rc = rc->_next)
+    {
+        if (rc->_icount > 0) { rtn_vector.push_back(*rc); }
+    }
+    
+    // sort vector (easier than sorting a linked list)
+    sort(rtn_vector.begin(), rtn_vector.end(), cmpRtnCount);
 
+    for (vector<RTN_COUNT>::iterator rc = rtn_vector.begin(); rc != rtn_vector.end(); rc++)
+    {
+        outFile << setw(23) << rc->_name << " "
+            << setw(15) << rc->_image << " "
+            << setw(18) << hex << rc->_address << dec <<" "
+            << setw(12) << rc->_rtnCount << " "
+            << setw(12) << rc->_icount << endl;
+    }
+    
+    /*
     for (RTN_COUNT * rc = RtnList; rc; rc = rc->_next)
     {
         if (rc->_icount > 0)
@@ -124,7 +153,7 @@ VOID Fini(INT32 code, VOID *v)
                   << setw(18) << hex << rc->_address << dec <<" "
                   << setw(12) << rc->_rtnCount << " "
                   << setw(12) << rc->_icount << endl;
-    }
+    }*/
 
 }
 

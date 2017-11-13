@@ -146,22 +146,27 @@ def gen_klist(args):
         f.write("#define KERNEL_SIZE " + str(data_df.shape[0]) + "\n")
         f.write("char* kernel_list[] = {\n")
         for _, row in data_df.iterrows():
-            f.write("    "" + row["Kernel Name"] + "",\n")
-        f.write("    "dummy"\n}; \n")
+            f.write('    "' + row["Kernel Name"] + '",\n')
+        f.write('    "dummy"\n}; \n')
 
 
-def arg2csv(args):
+def arg2csv(infile):
     result = pd.DataFrame()
     idx = 0
 
-    with open(args.argfile, "r") as argf:
+    with open(infile, "r") as argf:
         for line in argf:
             argslist = line.split()
             for key, value in zip(argslist[0::2], argslist[1::2]):
                 result.set_value(idx, re.sub("^-+", "", key), value)
             idx += 1
 
-    result.to_csv(args.csvfile, index=False)
+    return result
+
+
+def arg2csv_intf(args):
+    result_df = arg2csv(args.argfile)
+    result_df.to_csv(args.csvfile, index=False)
 
 
 def find_dep(args):
@@ -197,8 +202,6 @@ def find_dep(args):
 
 def parse_trace(tracefile):
     owner = {}
-    mem_read = {}
-    mem_write = {}
     comm_matrix = {}
 
     with tracefile as trace:
@@ -216,15 +219,15 @@ def parse_trace(tracefile):
 
             # first assume everything goes to memory
             if rw == "R":
-                if kernel in mem_read:
-                    mem_read[kernel] += size
+                if ("memory", kernel) in comm_matrix:
+                    comm_matrix["memory", kernel] += size
                 else:
-                    mem_read[kernel] = size
+                    comm_matrix["memory", kernel] = size
             elif rw == "W":
-                if kernel in mem_write:
-                    mem_write[kernel] += size
+                if (kernel, "memory") in comm_matrix:
+                    comm_matrix[kernel, "memory"] += size
                 else:
-                    mem_write[kernel] = size
+                    comm_matrix[kernel, "memory"] = size
             else:
                 raise Exception("Unknown memory operation in trace, line: " + line)
 
@@ -235,15 +238,15 @@ def parse_trace(tracefile):
                     effective_addr = hex(addr_int+i)
                     if effective_addr in owner:
                         if owner[effective_addr][1] == "W":
-                            mem_write[owner[effective_addr][0]] -= 1
-                        mem_read[kernel] -= 1
+                            comm_matrix[owner[effective_addr][0], "memory"] -= 1
+                        comm_matrix["memory", kernel] -= 1
                         if (owner[effective_addr][0], kernel) in comm_matrix:
                             comm_matrix[owner[effective_addr][0], kernel] += 1
                         else:
                             comm_matrix[owner[effective_addr][0], kernel] = 1
                         owner[effective_addr] = (kernel, "R")
 
-    return mem_read, mem_write, comm_matrix
+    return comm_matrix
 
 
 if (__name__ == "__main__"):
@@ -268,7 +271,7 @@ if (__name__ == "__main__"):
     parser_a2c = subparsers.add_parser("arg2csv", help="convert a bench_<app>.args file to .csv format")
     parser_a2c.add_argument("argfile", type=str, help="Path to input .args file")
     parser_a2c.add_argument("csvfile", type=str, help="Path to output .csv file")
-    parser_a2c.set_defaults(func=arg2csv)
+    parser_a2c.set_defaults(func=arg2csv_intf)
 
     # find dependency 
     parser_dep = subparsers.add_parser("depend", help="find dependency among kernels")

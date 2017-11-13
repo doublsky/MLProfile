@@ -6,13 +6,9 @@ import subprocess as sp
 import pandas as pd
 import argparse
 from util import *
+import socket
 
 rpt_cmd = "opreport -l -n".split()
-
-
-# results dataframe
-# results_df = pd.DataFrame()
-# idx = 0
 
 # read a list of interested kernels
 
@@ -115,18 +111,33 @@ def time_bench(args):
                     sp.check_call(cmd + config.split())
 
 
-def trace2csv(csvfile, count, mem_rd, mem_wr, comm_mat):
+def trace2csv(csvfile, count, mem_rd, mem_wr, comm_mat, cfg_table):
     print "processing No.", count
     with open(csvfile, "a") as resutls:
         for key, value in mem_rd.iteritems():
-            resutls.write("{},memory,{},{}\n".format(count, key, value))
+            resutls.write("{},memory,{},{},".format(count, key, value))
+            resutls.write(cfg_table.iloc[count].to_csv(index=False, header=False))
 
         for key, value in mem_wr.iteritems():
-            resutls.write("{},{},memory,{}\n".format(count, key, value))
+            resutls.write("{},{},memory,{},".format(count, key, value))
+            resutls.write(cfg_table.iloc[count].to_csv(index=False, header=False))
+
 
         for key, value in comm_mat.iteritems():
-            resutls.write("{},{},{},{}\n".format(count, key[0], key[1], value))
+            resutls.write("{},{},{},{},".format(count, key[0], key[1], value))
+            resutls.write(cfg_table.iloc[count].to_csv(index=False, header=False))
 
+
+def accumulate_comm_mat(partial_comm_mat, comm_mat):
+    total = 0
+    for key, value in partial_comm_mat.iteritems():
+        total += value
+
+    for key, value in partial_comm_mat.iteritems():
+        if key in comm_mat:
+            comm_mat[key] += float(partial_comm_mat[key]) / total
+        else:
+            comm_mat[key] = float(partial_comm_mat[key]) / total
 
 
 def pin_bench(args):
@@ -156,8 +167,8 @@ def pin_bench(args):
             outfile = benchfile.replace(".py", "_pin.csv")
             if os.path.exists(outfile):
                 os.remove(outfile)
-            with open(outfile, "w") as resutls:
-                resutls.write("use case,producer,consumer,data\n")
+            
+            comm_mat = {}
 
             with open(config_file, 'r') as config_list:
                 for configs in config_list:
@@ -177,10 +188,20 @@ def pin_bench(args):
                         sp.check_call(full_cmd)
                 
                     with open(tracefile, "r") as trace:
-                        mem_rd, mem_wr, comm_mat = parse_trace(trace)
+                        partial_comm_mat = parse_trace(trace)
                     
-                    trace2csv(outfile, count, mem_rd, mem_wr, comm_mat)
+                    accumulate_comm_mat(partial_comm_mat, comm_mat)
                     
+                    # checkpoint result
+                    with open(outfile, "w") as f:
+                        f.write("producer,consumer,data\n")
+                        for key, value in comm_mat.iteritems():
+                            f.write("{},{},{}\n".format(key[0], key[1], value/(count+1)))
+                    
+                    # vagabond has limit disk space, remove tracefile if on vagabond
+                    if socket.gethostname() == "vagabond":
+                        os.remove(tracefile)
+
                     count += 1
 
 

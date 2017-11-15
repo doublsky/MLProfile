@@ -7,6 +7,7 @@ import argparse
 from time import time
 from sklearn import linear_model
 import sys
+from util import *
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Benchmark logistic regression.")
@@ -16,13 +17,13 @@ if __name__ == '__main__':
                         help="Number of features to be generated and fit.")
     parser.add_argument('--penalty', default='l2', type=str,
                         help="parameter for underlying logistic regression.")
-    parser.add_argument('--dual', default=False, type=bool,
+    parser.add_argument('--dual', default=False, type=str2bool,
                         help="parameter for underlying logistic regression.")
     parser.add_argument('--tol', default=1e-4, type=float,
                         help="parameter for underlying logistic regression.")
     parser.add_argument('-C', default=1.0, type=float,
                         help="parameter for underlying logistic regression.")
-    parser.add_argument('--fit_intercept', default=True, type=bool,
+    parser.add_argument('--fit_intercept', default=True, type=str2bool,
                         help="parameter for underlying logistic regression.")
     parser.add_argument('--intercept_scaling', default=1, type=float,
                         help="parameter for underlying logistic regression.")

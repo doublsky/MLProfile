@@ -7,6 +7,7 @@ import argparse
 from time import time
 from sklearn import linear_model
 import sys
+from util import *
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Benchmark logistic regression.")
@@ -16,13 +17,13 @@ if __name__ == '__main__':
                         help="Number of features to be generated and fit.")
     parser.add_argument('--penalty', default='l2', type=str,
                         help="parameter for underlying logistic regression.")
-    parser.add_argument('--dual', default=False, type=bool,
+    parser.add_argument('--dual', default=False, type=str2bool,
                         help="parameter for underlying logistic regression.")
     parser.add_argument('--tol', default=1e-4, type=float,
                         help="parameter for underlying logistic regression.")
     parser.add_argument('-C', default=1.0, type=float,
                         help="parameter for underlying logistic regression.")
-    parser.add_argument('--fit_intercept', default=True, type=bool,
+    parser.add_argument('--fit_intercept', default=True, type=str2bool,
                         help="parameter for underlying logistic regression.")
     parser.add_argument('--intercept_scaling', default=1, type=float,
                         help="parameter for underlying logistic regression.")
@@ -36,9 +37,9 @@ if __name__ == '__main__':
 
     print >> sys.stderr, "- loading data..."
     start_time = time()
-    X_name = "dataset/cl3X_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
+    X_name = "dataset/clfX_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     X = np.load(X_name)
-    y_name = "dataset/cl3y_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
+    y_name = "dataset/clfy_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     y = np.load(y_name)
     data_loading_time = time() - start_time
     print >> sys.stderr, "- data loading time:", data_loading_time

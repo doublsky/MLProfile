@@ -45,20 +45,14 @@ def gen_dataset(RorC, ns, nf):
                                n_features=nf,
                                n_informative=nf//2,
                                noise=0.1)
-    elif RorC == "cl2":
+    elif RorC == "clf":
         X, y = make_classification(n_samples=ns,
                                    n_features=nf,
                                    n_informative=nf//2,
                                    n_redundant=nf//10,
                                    n_classes=2)
-    elif RorC == "cl3":
-        X, y = make_classification(n_samples=ns,
-                                   n_features=nf,
-                                   n_informative=nf//2,
-                                   n_redundant=nf//10,
-                                   n_classes=3)
     else:
-        raise ValueError("RorC must be either reg, cl2, or cl3, got " + str(RorC))
+        raise ValueError("RorC must be either reg or clf, got " + str(RorC))
     
     X_name = "{}X_ns{}_nf{}".format(RorC, ns, nf)
     X_path = os.path.join(MLProf_root, "dataset", X_name)
@@ -87,7 +81,7 @@ def maybe_create_dataset(config_line):
     if not os.path.exists(dataset_dir):
         os.mkdir(dataset_dir)
 
-    for prefix in ["regX", "regy", "cl2X", "cl2y", "cl3X", "cl3y"]:
+    for prefix in ["regX", "regy", "clfX", "clfy"]:
         dataset_name = "{}_ns{}_nf{}.npy".format(prefix, configs.ns, configs.nf)
         dataset_path = os.path.join(dataset_dir, dataset_name)
 

@@ -111,21 +111,14 @@ def time_bench(args):
                     sp.check_call(cmd + config.split())
 
 
-def trace2csv(csvfile, count, mem_rd, mem_wr, comm_mat, cfg_table):
-    print "processing No.", count
+def trace2csv(csvfile, count, comm_mat):
+    total = 0
+    for key, value in comm_mat.iteritems():
+        total += value
+    
     with open(csvfile, "a") as resutls:
-        for key, value in mem_rd.iteritems():
-            resutls.write("{},memory,{},{},".format(count, key, value))
-            resutls.write(cfg_table.iloc[count].to_csv(index=False, header=False))
-
-        for key, value in mem_wr.iteritems():
-            resutls.write("{},{},memory,{},".format(count, key, value))
-            resutls.write(cfg_table.iloc[count].to_csv(index=False, header=False))
-
-
         for key, value in comm_mat.iteritems():
-            resutls.write("{},{},{},{},".format(count, key[0], key[1], value))
-            resutls.write(cfg_table.iloc[count].to_csv(index=False, header=False))
+            resutls.write("{},{},{},{}\n".format(count, key[0], key[1], float(value)/total))
 
 
 def accumulate_comm_mat(partial_comm_mat, comm_mat):
@@ -168,8 +161,9 @@ def pin_bench(args):
             if os.path.exists(outfile):
                 os.remove(outfile)
             
-            comm_mat = {}
-
+            with open(outfile, "w") as f:
+                f.write("use case,producer,consumer,comm weight\n")
+            
             with open(config_file, 'r') as config_list:
                 for configs in config_list:
                     # init
@@ -185,21 +179,19 @@ def pin_bench(args):
                         full_cmd = list(pin_cmd)
                         full_cmd += ["-output", tracefile, "--", "python", benchfile]
                         full_cmd += configs.split()
-                        sp.check_call(full_cmd)
+                        try:
+                            sp.check_call(full_cmd)
+                        except:
+                            os.remove(tracefile)
+                            raise
                 
                     with open(tracefile, "r") as trace:
-                        partial_comm_mat = parse_trace(trace)
+                        comm_mat = parse_trace(trace)
                     
-                    accumulate_comm_mat(partial_comm_mat, comm_mat)
+                    trace2csv(outfile, count, comm_mat)
                     
-                    # checkpoint result
-                    with open(outfile, "w") as f:
-                        f.write("producer,consumer,data\n")
-                        for key, value in comm_mat.iteritems():
-                            f.write("{},{},{}\n".format(key[0], key[1], value/(count+1)))
-                    
-                    # vagabond has limit disk space, remove tracefile if on vagabond
-                    if socket.gethostname() == "vagabond":
+                    # remove tracefile if it is too large
+                    if os.path.getsize(tracefile) > 1e10:
                         os.remove(tracefile)
 
                     count += 1

@@ -23,6 +23,6 @@ elif args.tool == 'time' or args.tool == 'perf':
 
 arg_grid = ParameterGrid(arg_dict)
 
-config_filename = 'bench_linear.{}cfg'.format(args.tool)
+config_filename = 'bench_bayes.{}cfg'.format(args.tool)
 
 write_config_file(config_filename, arg_grid)

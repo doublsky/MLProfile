@@ -19,9 +19,9 @@ if __name__ == '__main__':
 
     print >> sys.stderr, "- loading data..."
     start_time = time()
-    X_name = "dataset/cl3X_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
+    X_name = "dataset/clfX_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     X = np.load(X_name)
-    y_name = "dataset/cl3y_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
+    y_name = "dataset/clfy_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     y = np.load(y_name)
     data_loading_time = time() - start_time
     print >> sys.stderr, "- data loading time:", data_loading_time

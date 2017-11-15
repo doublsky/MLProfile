@@ -17,8 +17,8 @@ if args.tool == "pin":
         "--fit_intercept": [True, False],
         "--solver": ["newton-cg", "lbfgs", "liblinear", "sag", "saga"],
         "--multi_class": ["ovr", "multinomial"],
-        "-ns": [100, 400, 1600],
-        "-nf": [10, 30, 90]
+        "-ns": [100, 200, 300],
+        "-nf": [10, 20, 30]
     }
 elif args.tool == 'time' or args.tool == 'perf':
     arg_dict = {

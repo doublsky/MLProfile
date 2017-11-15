@@ -3,7 +3,7 @@ Generate argument list for benchmark MLP
 """
 
 from sklearn.model_selection import ParameterGrid
-from util import write_config_file
+from util import dict_to_str
 import argparse
 
 parser = argparse.ArgumentParser(description="Generate configuration file for bench_mlp")
@@ -33,4 +33,11 @@ arg_grid = ParameterGrid(arg_dict)
 
 config_filename = 'bench_mlp.{}cfg'.format(args.tool)
 
-write_config_file(config_filename, arg_grid)
+with open(config_filename, "w") as f:
+    for arg in arg_grid:
+        # learning_rate only used when solver='sgd'
+        if arg["--solver"] != "sgd" and arg["--learning_rate"] != "constant":
+            continue
+
+        if (arg["-ns"] * arg["-nf"] <= 100000000):
+            f.write(dict_to_str(arg)+"\n")

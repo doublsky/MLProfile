@@ -19,9 +19,9 @@ if __name__ == '__main__':
                         help="parameter for underlying MLP.")
     parser.add_argument('--solver', default='adam', type=str,
                         help="parameter for underlying MLP.")
-    parser.add_argument('--batch_size', default=200, type=int,
-                        help="parameter for underlying MLP.")
     parser.add_argument('--learning_rate', default='constant', type=str,
+                        help="parameter for underlying MLP.")
+    parser.add_argument('--shuffle', default=True, type=str2bool,
                         help="parameter for underlying MLP.")
     parser.add_argument('--nesterovs_momentum', default=True, type=str2bool,
                         help="parameter for underlying MLP.")
@@ -29,9 +29,9 @@ if __name__ == '__main__':
 
     print >> sys.stderr, "- loading data..."
     start_time = time()
-    X_name = "dataset/cl3X_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
+    X_name = "dataset/clfX_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     X = np.load(X_name)
-    y_name = "dataset/cl3y_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
+    y_name = "dataset/clfy_ns"+str(args.ns)+"_nf"+str(args.nf)+".npy"
     y = np.load(y_name)
     data_loading_time = time() - start_time
     print >> sys.stderr, "- data loading time:", data_loading_time
@@ -39,8 +39,8 @@ if __name__ == '__main__':
     clf = neural_network.MLPClassifier(
         activation=args.activation,
         solver=args.solver,
-        batch_size=args.batch_size,
         learning_rate=args.learning_rate,
+        shuffle=args.shuffle,
         nesterovs_momentum=args.nesterovs_momentum
     )
     start_time = time()

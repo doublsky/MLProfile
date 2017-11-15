@@ -15,8 +15,8 @@ if args.tool == "pin":
         "--fit_intercept": [True, False],
         "--normalize": [True, False],
         "--solver": ['svd', 'cholesky', 'lsqr', 'sparse_cg', 'sag', 'saga'],
-        "-ns": [100, 400, 1600],
-        "-nf": [10, 40, 160]
+        "-ns": [100, 200, 300],
+        "-nf": [10, 20, 30]
     }
 elif args.tool == "time" or args.tool == "perf":
     arg_dict = {
